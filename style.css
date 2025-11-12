@@ -1,32 +1,14 @@
-body {
-  margin: 0;
+#timeline {
+  height: 1440px;
+  width: 120px;
+  border: 2px solid #111;
+  border-right: none;
+  position: relative;
+  margin: 60px;
 }
 
-header {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-div {
+.divider {
   border: 1px solid #111;
-  border-top: none;
-  width: 25%;
-  height: 25%;
-  cursor: pointer;
-}
-
-#input {
-  border-left: none;
-  border-right: none;
-}
-
-#output {
-  border-right: none;
-  border-left: none;
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 0;
+  position: absolute;
+  width: 80px;
 }
