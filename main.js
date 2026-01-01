@@ -1,25 +1,82 @@
 'use strict';
 
 {
-  const timeline = document.getElementById('timeline');
-  for (let i = 0; i <= 24; i++) {
-    const divider = document.createElement('div');
-    divider.classList.add('divider');
-    divider.style.top = (i * 100) + "px"; 
-    timeline.appendChild(divider);
+  let todos = JSON.parse(localStorage.getItem("unt")) || [];
+  const todoList = document.getElementById('todoList');
 
-  for (let i = 0; i <= 48; i++) {
-    const halfDivider = document.createElement('div');
-    halfDivider.classList.add('halfD');
-    halfDivider.style.top = ((i * 100) / 2) + "px";
-    timeline.appendChild(halfDivider);
+  function createToDoItem(todo) {
+    const li = document.createElement('li');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    const text = document.createElement('span');
+    text.textContent = todo.text;
+    li.append(checkbox, text);
+    li.dataset.id = todo.id;
+    checkbox.addEventListener('change', () => {
+      todo.done = checkbox.checked;
+      localStorage.setItem('unt', JSON.stringify(todos));
+      if (checkbox.checked) {
+        text.style.textDecoration = 'line-through';
+      } else {
+        text.style.textDecoration = 'none';
+      }
+    });
+    text.addEventListener('click', () => {
+      if (!todo.done === true) {
+        return;
+      } else {
+      if (!confirm('削除しますか？')) {
+        return;
+      } else {
+        deleteToDo(li)
+      }
+    }
+    });
+    
+    return li;
   }
-  
-    const label = document.createElement('span');
-    label.textContent = `${i}:00`;
-    label.style.position = 'absolute';
-    label.style.left = '100px';
-    label.style.top = (i * 100 - 8) + "px";
-    timeline.appendChild(label);
-  };
+
+  function createToDo() {
+    const createBTN = document.getElementById('createBTN');
+    createBTN.addEventListener('click', () => {
+      const todo = {
+        id: '',
+        text: '',
+        done: false,
+      }
+      const input = document.createElement('input');
+      todoList.appendChild(input);
+      input.type = 'text';
+      input.placeholder = 'やることを入力';
+      input.focus();
+      input.addEventListener('change', () => {
+        todo.id = Date.now()
+        todo.text = input.value;
+        todos.push(todo);
+        localStorage.setItem('unt', JSON.stringify(todos));
+        todoList.removeChild(input);
+        todoList.appendChild(createToDoItem(todo));
+      });
+    });
+  }
+
+  function renderToDo() {
+    todoList.innerHTML = '';
+    todos.forEach(todo => {
+      todoList.appendChild(createToDoItem(todo));
+    });
+  }
+
+  function deleteToDo(li) {
+        const updateToDos = todos.filter((todo) => {
+          return todo.id !== Number(li.dataset.id);
+        });
+        todos = updateToDos;
+        localStorage.setItem('unt', JSON.stringify(todos));
+        renderToDo();
+      }
+
+
+  renderToDo();
+  createToDo();
 }

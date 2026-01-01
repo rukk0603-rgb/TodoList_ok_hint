@@ -1,21 +1,8 @@
-#timeline {
-  height: 2400px;
-  width: 80px;
-  border: 2px solid #111;
-  border-right: none;
-  border-top: none;
-  position: relative;
-  margin: 60px;
+#listFrame  {
+  text-align: center;
 }
 
-.divider {
-  border: 1px solid #111;
-  position: absolute;
-  width: 80px;
-}
-
-.halfD {
-  border: 1px solid #111;
-  position: absolute;
-  width: 40px;
+ul {
+  list-style: none;
+  padding-left: 0;
 }
