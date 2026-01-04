@@ -10,29 +10,32 @@
     checkbox.type = 'checkbox';
     const text = document.createElement('span');
     text.textContent = todo.text;
+    if (todo.done === true) {
+      text.classList.add('done');
+      checkbox.checked = true;
+    }
     li.append(checkbox, text);
     li.dataset.id = todo.id;
     checkbox.addEventListener('change', () => {
       todo.done = checkbox.checked;
       localStorage.setItem('unt', JSON.stringify(todos));
-      if (checkbox.checked) {
-        text.style.textDecoration = 'line-through';
+      if (todo.done === true) {
+        text.classList.add('done');
       } else {
-        text.style.textDecoration = 'none';
+         text.classList.remove('done'); 
       }
     });
     text.addEventListener('click', () => {
-      if (!todo.done === true) {
+      if (todo.done === false) {
         return;
       } else {
-      if (!confirm('削除しますか？')) {
-        return;
-      } else {
-        deleteToDo(li)
+        if (!confirm('削除しますか？')) {
+          return;
+        } else {
+          deleteToDo(li)
+        }
       }
-    }
     });
-    
     return li;
   }
 
@@ -44,6 +47,7 @@
         text: '',
         done: false,
       }
+      createBTN.disabled = true;
       const input = document.createElement('input');
       todoList.appendChild(input);
       input.type = 'text';
@@ -56,6 +60,7 @@
         localStorage.setItem('unt', JSON.stringify(todos));
         todoList.removeChild(input);
         todoList.appendChild(createToDoItem(todo));
+        createBTN.disabled = false;
       });
     });
   }
@@ -68,13 +73,13 @@
   }
 
   function deleteToDo(li) {
-        const updateToDos = todos.filter((todo) => {
-          return todo.id !== Number(li.dataset.id);
-        });
-        todos = updateToDos;
-        localStorage.setItem('unt', JSON.stringify(todos));
-        renderToDo();
-      }
+    const updateToDos = todos.filter((todo) => {
+      return todo.id !== Number(li.dataset.id);
+    });
+    todos = updateToDos;
+    localStorage.setItem('unt', JSON.stringify(todos));
+    renderToDo();
+  }
 
 
   renderToDo();
